@@ -6,9 +6,9 @@
     </div>
 </if>
 <if condition="session('admin.success_msg')">
-    <div class="alert alert-success" style="margin-bottom: 0;" id="success_msg">
+    <div class="alert alert-success" style="margin-bottom: 0;margin:0 auto;width:10%" id="success_msg">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <div style="position:relative;margin: 0 auto"><?php echo session('admin.success_msg'); ?></div>
+            <div style="position:relative;margin: 0 auto"><b><?php echo session('admin.success_msg'); ?></b></div>
     </div>
 </if>
 </div>
@@ -28,6 +28,6 @@
         });
     }
     $(function(){
-       setTimeout(unsetSession,4000);
+       setTimeout(unsetSession,3000);
     })
 </script>

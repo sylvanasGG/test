@@ -1,4 +1,5 @@
-
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/form_v.css">
     <include file='layouts/ueditor' />
 
     <section class="content-header">
@@ -22,14 +23,14 @@
                         <div class="col-md-10 col-md-offset-1">
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <form action="{:U('Plate/store')}" method="POST" id="createPlateForm" enctype="multipart/form-data">
+                                    <form action="{:U('Plate/store')}" method="POST" id="createPlateForm" enctype="multipart/form-data" class="cmxform">
                                         <div class="form-group">
                                             <label>板块名称</label>
-                                            <input type="text" name="name" class="form-control" required="required" id="name">
+                                            <input type="text" name="name" class="form-control" required title="请输入板块名称" id="name">
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-top: 20px;">
                                             <label>板块标示</label>
-                                            <input type="text" name="mark" class="form-control" required="required" id="mark">
+                                            <input type="text" name="mark" class="form-control" required id="mark" title="请输入板块标示">
                                         </div>
                                         <!-- <div class="form-group">
                                             <label>板块开头图片</label>
@@ -39,11 +40,11 @@
                                             <!--<label>板块标题</label>-->
                                             <!--<input type="text" name="title" class="form-control" required="required">-->
                                         <!--</div>-->
-                                        <div class="form-group" style="min-height: 300px;overflow-y: auto">
+                                        <div class="form-group" style="min-height: 300px;overflow-y: auto;margin-top: 30px;">
                                             <label>板块内容</label>
                                             <script id="editor" name="content" type="text/plain"></script>
                                         </div>
-                                        <div>
+                                        <div style="margin-top: 20px;">
                                             <button class="btn btn-lg btn-info" type="submit" id="createPlateBtn22">新增 板块</button>
                                         </div>
                                     </form>
@@ -58,49 +59,8 @@
             </div>
         </section>
 
-    <script>
-    $("#createPlateBtn").click(function(e)
-    {
-        e.preventDefault();
-        var go = true;
-        var val = $("#name").val();
-        if(val == '')
-        {
-            alert('请输入板块名称');
-            $("#name").focus();
-            go = false;
-            return false;
-        }
-        if(go == false)
-        {
-            return false;
-        }
-        $("#createPlateForm").submit();
-        // $.ajax({
-        //     url: "{:U('Plate/store')}",
-        //     type: "post",
-        //     data: $("#createPlateForm").serializeArray(),
-        //     dataType: "json",
-        //     success: function( result ){
-        //             layer.closeAll();
-        //         if ( result.ret == 0 ) {
-                    
-        //             layer.alert('添加成功');
-        //         } else
-        //         {
-        //             layer.alert('添加失败，请重新提交');
-        //         }
-        //     },
-        //     error:function()
-        //     {
-        //         layer.closeAll();
-        //         layer.alert('页面出错，请刷新页面后重试');
-        //     }
-        // });
-        // layer.msg('提交中...',{
-        //     //icon: 1,
-        //     time: 10000 //2秒关闭（如果不配置，默认是3秒）
-        // });
-    })
-    
-    </script>
+<script>
+    $(function(){
+        $("#createPlateForm").validate();
+    });
+</script>

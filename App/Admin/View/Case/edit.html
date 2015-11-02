@@ -1,4 +1,5 @@
-
+<script type="text/javascript" src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/form_v.css">
 <section class="content-header">
     <h1>
         案例编辑
@@ -22,12 +23,12 @@
                     <div class="col-md-10 col-md-offset-1">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <form action="{:U('Case/update',array('id'=>$case['id']))}" method="POST" id="editCaseForm" class="form-horizontal">
+                                <form action="{:U('Case/update',array('id'=>$case['id']))}" method="POST" id="editCaseForm" class="form-horizontal cmxform">
                                     <!--<input type="hidden" name="id" value="{$case['case_id']}" />-->
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">案例类型</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control" name="case_type" id="case_type">
+                                            <select class="form-control" name="case_type" id="case_type" required title="请选择案例类型">
                                                 <option value="{$case['case_type']}">{$case_types[$case['case_type']]}</option>
                                                 <option value="">--请选择--</option>
                                                 <foreach name='{case_types}' item='val' key='key'>
@@ -40,43 +41,43 @@
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">标题</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" name="title"  required value="{$case['title']}"/>
+                                                <input type="text" class="form-control" name="title" required title="请输入案例标题" value="{$case['title']}"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">客户存储信息</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" name="storage_info"  required value="{$case['storage_info']}"/>
+                                                <input type="text" class="form-control" name="storage_info"  required title="请输入客户存储信息" value="{$case['storage_info']}"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">故障描述</label>
                                             <div class="col-sm-10">
-                                                <textarea name="fault_desc" class="form-control" required>{$case['fault_desc']}</textarea>
+                                                <textarea name="fault_desc" class="form-control" required title="请输入故障描述">{$case['fault_desc']}</textarea>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-top: 20px;">
                                             <label class="col-sm-2 control-label">恢复过程</label>
                                             <div class="col-sm-10">
-                                                <textarea name="recovery_process" class="form-control" required>{$case['recovery_process']}</textarea>
+                                                <textarea name="recovery_process" class="form-control" required title="请输入恢复过程">{$case['recovery_process']}</textarea>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-top: 20px;">
                                             <label class="col-sm-2 control-label">恢复结果</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" name="recovery_result"  required value="{$case['recovery_result']}"/>
+                                                <input type="text" class="form-control" name="recovery_result"  required title="请输入恢复结果" value="{$case['recovery_result']}"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">温馨提示</label>
                                             <div class="col-sm-10">
-                                                <textarea name="tips" class="form-control" required>{$case['tips']}</textarea>
+                                                <textarea name="tips" class="form-control" required title="请输入温馨提示">{$case['tips']}</textarea>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-top: 20px;">
                                             <label class="col-sm-2 control-label">备注，其他</label>
                                             <div class="col-sm-10">
-                                                <input type="text" name="remark" class="form-control"  required value="{$case['remark']}"/>
+                                                <input type="text" name="remark" class="form-control" value="{$case['remark']}"/>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -93,49 +94,9 @@
                 </div>
         </div>
      </div>
-                            </section>
-    <script>
-    $("#editCaseBtn").click(function(e)
-    {
-        e.preventDefault();
-        var go = true;
-        var val = $("#case_type").find('option:selected').val();
-        if(val == '')
-        {
-            alert('请选择案例类型');
-            $("#case_type").focus();
-            go = false;
-            return false;
-        }
-        if(go == false)
-        {
-            return false;
-        }
-        $("#editCaseForm").submit();
-//        $.ajax({
-//            url: "{:U('Case/update')}",
-//            type: "post",
-//            data: $("#editCaseForm").serializeArray(),
-//            dataType: "json",
-//            success: function( result ){
-//                    layer.closeAll();
-//                if ( result.ret == 0 ) {
-//
-//                    layer.alert('编辑成功');
-//                } else
-//                {
-//                    layer.alert('编辑失败，请重新提交');
-//                }
-//            },
-//            error:function()
-//            {
-//                layer.closeAll();
-//                layer.alert('页面出错，请刷新页面后重试');
-//            }
-//        });
-//        layer.msg('提交中...',{
-//            //icon: 1,
-//            time: 10000 //2秒关闭（如果不配置，默认是3秒）
-//        });
-    })
-    </script>
+</section>
+<script>
+    $(function(){
+        $("#editCaseForm").validate();
+    });
+</script>
