@@ -1,0 +1,140 @@
+
+    <include file='layouts/ueditor' />
+
+    <section class="content-header">
+        <h1>
+            文章添加
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{:U('Article/index')}"><i class="fa fa-dashboard"></i> 文章</a></li>
+            <li class="active">板块文章添加</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="box">
+            <div class="box-body">
+            
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <form action="{:U('Article/store')}" method="POST" id="createArticleForm" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label>文章板块</label>
+                                            <select class="form-control" name="article_type" id="article_type">
+                                                <option value="">--请选择--</option>
+                                                <foreach name='{article_types}' item='val' key='key'>
+                                                    <option value="{$key}">{$val}</option>
+                                                </foreach>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>文章开头图片</label>
+                                            <input type="file" name="article_photo"  />
+                                            <!-- <button type="button" class="btn btn-primary btn-xs" name="addBtn" id="add_file1" file_num='1'>
+                                                <span class="glyphicon glyphicon-plus">添加文件1</span>
+                                            </button>
+                                            <span id='file1' class='remark-box icon' style='display:none'><a href="" class='picture-icon' name="file1" target="_blank" style='margin-right:0'>文件1</a><input type='hidden' name='remark_file_a' /></span> -->
+                                       </div>
+                                        <div class="form-group">
+                                            <label>文章标题</label>
+                                            <input type="text" name="title" class="form-control" required="required">
+                                        </div>
+                                        <div class="form-group" style="min-height: 300px;overflow-y: auto">
+                                            <label>文章内容</label>
+                                            <script id="editor" name="content" type="text/plain"></script>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-lg btn-info" type="button" id="createArticleBtn">新增 Page</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            </div>
+        </section>
+
+    <script>
+    //图片上传
+//     KindEditor.ready(function(K) {
+//        var editor = K.editor({
+//            uploadJson      : '__ROOT__/uploads/',
+//            filePostName    : 'Filedata',
+//            fileFormUrl     : "#",
+//            extraFileUploadParams     : {
+//                '_isUpload' : true
+//            }
+//        });
+//        K('button[name=addBtn]').click(function() {
+//            var file_num = $(this).attr('file_num');
+//            editor.loadPlugin('insertfile', function() {
+//                editor.plugin.fileDialog({
+//                    fileUrl : K('#url').val(),
+//                    clickFn : function(url, title) {
+//                        if(file_num == '1'){
+//                            $("input[name='remark_file_a']").val(url);
+//                            $('#file1').show();
+//                            $('#file1').find("[name='file1']").attr('href', "/"+url);
+//                        }
+//
+//                        // 文件上传成功 ajax 更新 资源路径和说明
+//                        editor.hideDialog().focus();
+//                    }
+//                });
+//            });
+//        });
+//    });
+    $("#createArticleBtn").click(function(e)
+    {
+        e.preventDefault();
+        var go = true;
+        var val = $("#article_type").find('option:selected').val();
+        if(val == '')
+        {
+            alert('请选择文章类型');
+            $("#article_type").focus();
+            go = false;
+            return false;
+        }
+        if(go == false)
+        {
+            return false;
+        }
+        $("#createArticleForm").submit();
+        // $.ajax({
+        //     url: "{:U('Article/store')}",
+        //     type: "post",
+        //     data: $("#createArticleForm").serializeArray(),
+        //     dataType: "json",
+        //     success: function( result ){
+        //             layer.closeAll();
+        //         if ( result.ret == 0 ) {
+                    
+        //             layer.alert('添加成功');
+        //         } else
+        //         {
+        //             layer.alert('添加失败，请重新提交');
+        //         }
+        //     },
+        //     error:function()
+        //     {
+        //         layer.closeAll();
+        //         layer.alert('页面出错，请刷新页面后重试');
+        //     }
+        // });
+        // layer.msg('提交中...',{
+        //     //icon: 1,
+        //     time: 10000 //2秒关闭（如果不配置，默认是3秒）
+        // });
+    })
+    
+    </script>

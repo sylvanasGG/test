@@ -1,0 +1,15 @@
+*{
+	font-family: "Microsoft Yahei",Arial, Helvetica, sans-serif;
+}
+
+.widget .tag-cloud a {
+	border: 1px solid #ebebeb;
+	padding: 2px 7px;
+	color: #959595;
+	line-height: 1.5em;
+	display: inline-block;
+	margin: 0 7px 7px 0;
+	-webkit-transition: all 0.2s ease;
+	-o-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+}

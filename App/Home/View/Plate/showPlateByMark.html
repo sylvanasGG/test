@@ -1,0 +1,89 @@
+<!--<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">-->
+    <!--&lt;!&ndash; Wrapper for slides &ndash;&gt;-->
+    <!--<div class="carousel-inner" role="listbox">-->
+        <!--<div class="item active">-->
+            <!--<img src="{$plate['plate_photo']}" alt="..." style="width: 100%;height: 450px;">-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!-- Page Title -->
+<div class="section section-breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{$plate["name"]}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 50px;">
+    <div class="col-md-8 col-md-offset-2">
+        <plate id="{$plate['id']}" class="post tag-laravel tag-laravel-5-1 tag-xin-ban-ben-fa-bu">
+            <div class="post-content">
+                <p>{$plate['content']}</p>
+            </div>
+            <div class="post-permalink">
+
+            </div>
+        </plate>
+    </div>
+
+</div>
+
+
+
+<!--��ǩҳ-->
+<if condition='$plate["name"] eq "解决方案"'>
+    <div class="row" style="margin-top:10px;">
+
+        <div class="col-md-8 col-md-offset-2" style="background-color:#ffffff;padding-top:20px;padding-bottom:20px;">
+
+            <div class="media">
+                <!--<div class="media-left">-->
+                    <!--<a href="#">-->
+                        <!--<img class="media-object" src="__PUBLIC__/img/hx3.jpg" alt="..." style="width: 150px;height: 200px;">-->
+                    <!--</a>-->
+                <!--</div>-->
+                <div class="media-body">
+                    <!--<h3 class="media-heading"><strong><span style="font-size: 16px;font-weight: bold;">{$portrait['title']}</span></strong></h3>-->
+                    <!--<span style="color: #6c6c6c"><?php echo Fun::mixSub(strip_tags($portrait['content']),40)?></span>-->
+                    <div>
+
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs  nav-justified" role="tablist">
+                            <foreach name="solves" item="solve" key="k">
+                                <if condition="$k eq 0">
+                                    <li role="presentation"  class="active"><a href="#{$solve['mark']}" aria-controls="{$solve['mark']}" role="tab" data-toggle="tab"><span style="font-size: 16px;font-weight: bold;color:#337ab7">{$solve['title']}</span></a></li>
+                                <else />
+                                    <li role="presentation"><a href="#{$solve['mark']}" aria-controls="{$solve['mark']}" role="tab" data-toggle="tab"><span style="font-size: 16px;font-weight: bold;color:#337ab7">{$solve['title']}</span></a></li>
+                                </if>
+
+                            </foreach>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content" style="margin-top: 10px;">
+                            <foreach name="solves" item="solve" key="k">
+                                <if condition="$k eq 0">
+                                    <div role="tabpanel" class="tab-pane active" id="{$solve['mark']}">
+                                        <!--企业级数据库解决方案-->
+                                        <p style="font-size: 22px;font-weight: bold;">{$solve['desc']}</p>
+                                        <p style="font-size: 16px;font-weight: bold;"><a href="{:U('Solve/showById',array('id'=>$solve['id']))}">详情...</a></p>
+                                    </div>
+                                    <else />
+                                    <div role="tabpanel" class="tab-pane" id="{$solve['mark']}">
+                                        <!--磁盘阵列数据解决方案-->
+                                        <p style="font-size: 22px;font-weight: bold;">{$solve['desc']}</p>
+                                        <p style="font-size: 16px;font-weight: bold;"><a href="{:U('Solve/showById',array('id'=>$solve['id']))}">详情...</a></p>
+                                    </div>
+                                </if>
+
+                            </foreach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</if>

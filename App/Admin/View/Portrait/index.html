@@ -1,0 +1,98 @@
+<style>
+    .pagelist{
+        font-size:18pt;
+        display: inline-block;
+        margin-right: 10px;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        横向
+        <!--<a href="{:U('portrait/create')}" class="btn btn-primary btn-sm">文章添加</a>-->
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 板块</a></li>
+        <li class="active">板块列表</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <div class="box">
+        <!--内容头部-->
+        <div class="box-header">
+
+        </div>
+        <!--内容主体-->
+        <div class="box-body" style="overflow-x: auto;">
+            <table class="table table-striped">
+                <tr class="row">
+                    <th class="col-lg-2">标题</th>
+                    <th class="col-lg-1">图片</th>
+                    <th class="col-lg-4">内容</th>
+                    <th class="col-lg-2">最后发布时间</th>
+                    <th class="col-lg-1">作者</th>
+                    <th class="col-lg-1" style="text-align: center">编辑 | 删除</th>
+                </tr>
+                <foreach name='portraits' item='portrait'>
+                    <tr class="row">
+                        <td class="col-lg-2">
+                            {$portrait['title']}
+                        </td>
+                        <td class="col-lg-1">
+                            <a href="{$portrait['portrait_photo']}" target="_blank">图片</a>
+                        </td>
+                        <td class="col-lg-4">
+                            <a href="{:U('Home/portrait/showportraitByType',array('name'=>$portrait['name']))}" target="_blank"><?php echo Fun::mixSub(strip_tags($portrait['content']),30)?></a>
+                        </td>
+                        <td class="col-lg-2">
+                            {$portrait.updated_at}
+                        </td>
+                        <td class="col-lg-1">
+                            {$portrait['author']}
+                        </td>
+                        <td class="col-lg-1" style="text-align: center">
+                            <a href="{:U('portrait/edit',array('id'=>$portrait['id']))}"><i class="fa fa-fw fa-pencil" data-toggle="tooltip" data-original-title="编辑"></i></a> |
+                            <a href="javascript:void(0)" id="del" onclick="del(this)" rel="{$portrait['id']}"><i class="fa fa-fw fa-remove" data-toggle="tooltip" data-original-title="删除"></i></a>
+                        </td>
+                    </tr>
+                </foreach>
+            </table>
+        </div><!-- /.box-body -->
+        <!--内容尾部-->
+        <div class="box-footer clearfix">
+            <div class="pull-right">
+                {$page}
+            </div>
+        </div>
+    </div>
+
+</section><!-- /.content -->
+<script>
+    function del(e)
+    {
+        if(!confirm('确定要删除吗？'))
+        {
+            return false;
+        }
+        var obj = $(e);
+        var id = obj.attr("rel");
+        $.ajax({
+            url: "{:U('Portrait/delete')}",
+            type: "get",
+            data: {"id":id},
+            dataType: "json",
+            success: function( result ){
+                if ( result.ret == 0 ) {
+                    obj.parent().parent().remove();
+                    alert(result.msg);
+                }
+            },
+            error:function(data) {
+                obj.parent().parent().remove();
+                alert('删除成功');
+            }
+        });
+    }
+</script>

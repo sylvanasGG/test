@@ -1,0 +1,31 @@
+
+<!-- Navigation & Logo-->
+<div class="mainmenu-wrapper">
+    <div class="container">
+        <div class="menuextras">
+        </div>
+        <nav id="mainmenu" class="mainmenu">
+            <ul>
+                <li class="logo-wrapper"><a href="{:U('Index/index')}"><img src="__PUBLIC__/img/logos/logo1.jpg" alt="Multipurpose Twitter Bootstrap Template" style="height: 50px;width: 100px;"></a></li>
+                <li class="">
+                    <a href="{:U('Index/index')}"><b>首页</b></a>
+                </li>
+                <li>
+                    <a href="{:U('Solve/index')}">解决方案</a>
+                </li>
+                <foreach name="headers" item="header">
+                    <?php 
+                        $active = '';
+                        if (isset($plate['mark']) && $plate['mark'] == $header['mark']) {
+                           $active = 'active'; 
+                        }
+
+                    ?>
+                    <li class="{$active}">
+                        <a href="{:U('Plate/showPlateByMark',array('mark'=>$header['mark']))}">{$header['name']}</a>
+                    </li>
+                </foreach>
+            </ul>
+        </nav>
+    </div>
+</div>

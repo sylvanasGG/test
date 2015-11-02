@@ -1,0 +1,151 @@
+<style>
+        .pagelist{
+            font-size:18pt;
+            display: inline-block;
+            margin-right: 10px; 
+        }
+    </style>
+<section class="content-header">
+    <h1>
+        评论列表
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 评论</a></li>
+        <li class="active">评论列表</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <div class="box">
+        <!--内容头部-->
+        <div class="box-header">
+            <form action="" method="get" id="commentSearchForm">
+                <table class="table">
+                    <colgroup>
+                        <col style="width: 300px;" />
+                        <col style="width: 300px;" />
+                        <col />
+                        <col style="width: 150px;" />
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">评论内容</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" name="content" value="{$content}">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">所属文章</span>
+                                <select class="form-control" name="article_id" id="article_id">
+                                    <option value="">--请选择--</option>
+                                    <foreach name='{articleArr}' item='val' key='key'>
+                                        <?php
+                                            $selected='';if($key == $article_id)$selected="selected='selected'"
+                                            ?>
+                                        <option value="{$key}" {$selected}><?php echo Fun::mixSub(strip_tags($val),9) ?></option>
+                                    </foreach>
+                                </select>
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div class="input-group">
+                                <span class="input-group-addon">评论时间</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" name="created_at_start" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',alwaysUseStartDate:true})" value="{$created_at_start}">
+                                <span class="input-group-addon">至</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" name="created_at_end" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',alwaysUseStartDate:true})" value="{$created_at_end}">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <button class="btn btn-primary" type="submit">搜索</button>&nbsp;&nbsp;
+                                <button class="btn btn-primary" type="button" onclick="resetForm()">重置</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <!--内容主体-->
+        <div class="box-body" style="overflow-x: auto;">
+            <table class="table table-striped">
+                <tr class="row">
+                    <th class="col-lg-3">内容</th>
+                    <th class="col-lg-1">用户</th>
+                    <th class="col-lg-2">评论文章</th>
+                    <th class="col-lg-2">邮箱</th>
+                    <th class="col-lg-2">评论时间</th>
+                    <th class="col-lg-2" style="text-align: center">编辑 | 删除</th>
+                </tr>
+                <foreach name='comments' item='comment'>
+                <tr class="row">
+                    <td class="col-lg-1">
+                        <span data-toggle="tooltip" data-original-title="{$comment['content']}"><?php echo Fun::mixSub(strip_tags($comment['content']),20)?></span>
+                    </td>
+                    <td class="col-lg-1">
+                        {$comment['nickname']}
+                    </td>
+                    <td class="col-lg-3">
+                        <a href="{:U('Home/Article/show',array('id'=>$comment['article_id']))}" target="_blank"><?php $article = new \Home\Model\ArticleModel();$mod=$article->where('article_id='.$comment['article_id'])->find();echo Fun::mixSub(strip_tags($mod['title']),20)?></a>
+                    </td>
+                    <td class="col-lg-2">
+                        {$comment['email']}
+                    </td>
+                    <td class="col-lg-1">
+                        {$comment['created_at']}
+                    </td>
+                    <td class="col-lg-1" style="text-align: center">
+                        <a href="{:U('Comment/edit',array('id'=>$comment['id']))}"><i class="fa fa-fw fa-pencil" data-toggle="tooltip" data-original-title="编辑"></i></a> |
+                        <a href="javascript:void(0)" id="del" onclick="del(this)" rel="{$comment['id']}"><i class="fa fa-fw fa-remove" data-toggle="tooltip" data-original-title="删除"></i></a>
+                    </td>
+                </tr>
+                </foreach>
+            </table>
+        </div><!-- /.box-body -->
+        <!--内容尾部-->
+        <div class="box-footer clearfix">
+            <div class="pull-right">
+                {$page}
+            </div>
+        </div>
+    </div>
+
+</section><!-- /.content -->
+<script>
+    function del(e)
+    {
+        if(!confirm('确定要删除吗？'))
+        {
+            return false;
+        }
+        var obj = $(e);
+        var id = obj.attr("rel");
+        $.ajax({
+            url: "{:U('Comment/delete')}",
+            type: "get",
+            data: {"id":id},
+            dataType: "json",
+            success: function( result ){
+                if ( result.ret == 0 ) {
+                    obj.parent().parent().remove();
+                    alert(result.msg);
+                }
+            }
+        });
+    }
+
+    function resetForm()
+    {
+        $("#commentSearchForm input").val('');
+        $("#commentSearchForm select").val('');
+    }
+</script>
