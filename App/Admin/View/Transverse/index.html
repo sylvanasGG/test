@@ -79,7 +79,7 @@
         var obj = $(e);
         var id = obj.attr("rel");
         $.ajax({
-            url: "{:U('Plate/delete')}",
+            url: "{:U('Transverse/delete')}",
             type: "get",
             data: {"id":id},
             dataType: "json",

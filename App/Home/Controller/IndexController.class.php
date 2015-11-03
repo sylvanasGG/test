@@ -5,9 +5,9 @@ use Home\Model\ArticleModel as Article;
 class IndexController extends BaseController {
     public function index(){
         //轮换图片
-//        $picture = M('Pictures');
-//        $res = $picture->order('id')->select();
-//        $this->assign('pictures',$res);
+        $picture = M('Slide');
+        $res = $picture->order('id')->select();
+        $this->assign('slides',$res);
 
         //横向文章
 //        $transverse = M('Transverse');

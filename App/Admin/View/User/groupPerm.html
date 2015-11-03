@@ -27,7 +27,7 @@
                 <tr style="background-color:#eaf3fa">
                     <td>
                         <div class="checkbox" style="margin: 0">
-                            <label><input type="checkbox" value="" onclick="PermCheckAll(this, 'access_{$key}')">{$val['treeView']['name']}</label>
+                            <label><input type="checkbox" value="" onclick="PermCheckAll(this, 'access_{$key}')"><b>{$val['treeView']['name']}</b></label>
                         </div>
                     </td>
                 </tr>
@@ -46,7 +46,7 @@
                                                 $checked = checked;
                                             }
                                         ?>
-                                        <input type="checkbox" value="{$item['actionName']}" {$checked} name="perm_allow[]">{$item['name']}
+                                        <input type="checkbox" value="{$item['actionName']}" {$checked} name="perm_allow[]"><span style="color:#006699">{$item['name']}</span>
 
                                     </label>
                                 </div>

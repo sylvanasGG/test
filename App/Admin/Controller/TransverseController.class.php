@@ -26,11 +26,11 @@ class TransverseController extends BaseController {
         $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');
         $upload->rootPath  =     './uploads/';
         $upload->savePath  =     '';
-        // �ϴ������ļ� 
+        //
         $info   =   $upload->uploadOne($fileInfo);
-        if(!$info) {// �ϴ�������ʾ������Ϣ
+        if(!$info) {
             $this->error($upload->getError());
-        }else{// �ϴ��ɹ� ��ȡ�ϴ��ļ���Ϣ
+        }else{//
             return  $info['savepath'].$info['savename'];
         }
     }

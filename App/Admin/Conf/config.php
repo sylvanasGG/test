@@ -129,6 +129,14 @@ return array(
                 ))
             )
         ),
+        'comment' => array(
+            'treeView' => array('name' => '评论', 'icon' => 'fa-pencil', 'url' => '#', 'actionName' => 'Admin\Controller\CommentController'),
+            'treeViewMenu' => array(
+                array('name' => '评论列表', 'icon' => 'fa-circle-o', 'url' => "Comment/index", 'actionName' => 'Comment/index','auth' =>array(
+                    ''
+                ))
+            )
+        ),
         'user' => array(
             'treeView' => array('name' => '管理员', 'icon' => 'fa-user', 'url' => '#', 'actionName' => 'Admin\Controller\UserController'),
             'treeViewMenu' => array(
