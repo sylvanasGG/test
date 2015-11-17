@@ -101,7 +101,7 @@
                         {$article['author']}
                     </td>
                     <td class="col-lg-1">
-                        <?php echo \Common\Common\ArticleLib::$ARTICLE_TYPE[$article['article_type']]?>
+                        <?php echo $article_types[$article['article_type']]?>
                     </td>
                     <td class="col-lg-1">
                         <a href="{$article['article_photo']}" target="_blank">图片</a>

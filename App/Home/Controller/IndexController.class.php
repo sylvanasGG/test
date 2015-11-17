@@ -9,16 +9,6 @@ class IndexController extends BaseController {
         $res = $picture->order('id')->select();
         $this->assign('slides',$res);
 
-        //横向文章
-//        $transverse = M('Transverse');
-//        $res_transverses = $transverse->order('id')->select();
-//        $this->assign('transverses',$res_transverses);
-//
-//        //纵向文章
-//        $portrait = M('Portrait');
-//        $res_portraits = $portrait->order('id')->select();
-//        $this->assign('portraits',$res_portraits);
-//        $this->display();
 
         $this->display();
 

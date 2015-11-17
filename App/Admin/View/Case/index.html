@@ -22,7 +22,7 @@
     <div class="box">
         <!--内容头部-->
         <div class="box-header">
-            <form action="" method="get" id="articleSearchForm">
+            <form action="" method="get" id="caseSearchForm">
                 <table class="table">
                     <colgroup>
                         <col style="width: 200px" />
@@ -87,32 +87,37 @@
         <div class="box-body" style="overflow-x: auto;">
             <table class="table table-striped">
                 <tr class="row">
-                    <th class="col-lg-3">标题</th>
+                    <th class="col-lg-2">标题</th>
+                    <th class="col-lg-1">缩略图</th>
                     <th class="col-lg-2">案例类型</th>
-                    <th class="col-lg-4">案例内容</th>
-                    <th class="col-lg-1">最后更新时间</th>
+                    <th class="col-lg-3">案例内容</th>
+                    <th class="col-lg-2">最后更新时间</th>
                     <th class="col-lg-1">作者</th>
                     <th class="col-lg-1" style="text-align: center">编辑 | 删除</th>
                 </tr>
                 <foreach name='cases' item='case'>
                 <tr class="row">
-                    <td class="col-lg-3">
+                    <td class="col-lg-2">
                         {$case['title']}
                     </td>
-                    <td class="col-lg-2">
-                        <?php echo \Common\Common\ArticleLib::$CASE_TYPE[$case['case_type']]?>
-                    </td>
-                    <td class="col-lg-4">
-                        <a href="{:U('Home/Case/index')}" target="_blank"><?php echo Fun::mixSub(strip_tags($case['recovery_process']),30)?></a>
-                    </td>
                     <td class="col-lg-1">
+                        <a href="{$case['case_photo']}" target="_blank">图片</a>
+                    </td>
+                    <td class="col-lg-2">
+                        <?php echo $case_types[$case['case_type']]?>
+                    </td>
+
+                    <td class="col-lg-3">
+                        <a href="{:U('Home/Case/index')}" target="_blank"><?php echo Fun::mixSub(strip_tags($case['content']),30)?></a>
+                    </td>
+                    <td class="col-lg-2">
                         {$case['updated_at']}
                     </td>
                     <td class="col-lg-1">
                         {$case['author']}
                     </td>
                     <td class="col-lg-1" style="text-align: center">
-                        <a href="{:U('Case/edit',array('id'=>$case['id']))}"><i class="fa fa-fw fa-pencil" data-toggle="tooltip" data-original-title="编辑"></i></a> |
+                        <a href="{:U('Case/edit',array('id'=>$case['case_id']))}"><i class="fa fa-fw fa-pencil" data-toggle="tooltip" data-original-title="编辑"></i></a> |
                         <a href="javascript:void(0)" id="del" onclick="del(this)" rel="{$case['id']}"><i class="fa fa-fw fa-remove" data-toggle="tooltip" data-original-title="删除"></i></a>
                     </td>
                 </tr>
@@ -153,7 +158,7 @@
 
     function resetForm()
     {
-        $("#articleSearchForm input").val('');
-        $("#articleSearchForm select").val('');
+        $("#caseSearchForm input").val('');
+        $("#caseSearchForm select").val('');
     }
 </script>

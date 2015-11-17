@@ -3,7 +3,7 @@ namespace Admin\Model;
 use Think\Model;
 class AdminAccessModel extends Model{
 	protected $tablePrefix = '';
-    protected $tableName = 'admin_accesses';
+    protected $tableName = 'la_admin_accesses';
 
     /**
      * 获取系统管理员信息

@@ -1,21 +1,12 @@
 <?php
 return array(
     //'配置项'=>'配置值'
-    'URL_ROUTE_RULES'=>array(
-        //'admin/index' => 'Admin/Index/index',
-        //'index/show' => 'Admin/Index/show'
-    ),
-    'TMPL_PARSE_STRING'=>array(
-        '__PUBLIC__'=>__ROOT__."/Public",
-    ),
+    
     //开启布局
     'LAYOUT_ON'=>true,
     'LAYOUT_NAME'=>'layouts/admin',
     // 设置默认的模板主题
     //'DEFAULT_THEME'    =>    'admin'
-
-    //上传图片的绝对地址
-    //'UPLOAD_PATH'            =>realpath(__ROOT__).'/Public/uploads/img/',
 
     'LAYOUT_MENU'=>array(
         ''=>array(
@@ -34,21 +25,10 @@ return array(
                 ))
             )
         ),
-        'plate' => array(
-            'treeView' => array('name' => '板块', 'icon' => 'fa-folder', 'url' => '#', 'actionName' => 'Admin\Controller\PlateController'),
-            'treeViewMenu' => array(
-                array('name' => '板块列表', 'icon' => 'fa-circle-o', 'url' => "Plate/index", 'actionName' => "Plate/index",'auth' =>array(
-
-                )),
-                array('name' => '新增板块', 'icon' => 'fa-circle-o', 'url' => "Plate/create", 'actionName' => 'Plate/create','auth' =>array(
-                    ''
-                ))
-            )
-        ),
          'slide' => array(
              'treeView' => array('name' => '幻灯片', 'icon' => 'fa-pencil', 'url' => '#', 'actionName' => 'Admin\Controller\SlideController'),
              'treeViewMenu' => array(
-                 array('name' => '更换图片', 'icon' => 'fa-circle-o', 'url' => "Slide/index", 'actionName' => "Slide/index",'auth' =>array(
+                 array('name' => '列表', 'icon' => 'fa-circle-o', 'url' => "Slide/index", 'actionName' => "Slide/index",'auth' =>array(
 
                  ))
              )
@@ -78,23 +58,12 @@ return array(
         'img' => array(
             'treeView' => array('name' => '图片集合', 'icon' => 'fa-pencil', 'url' => '#', 'actionName' => 'Admin\Controller\PictureController'),
             'treeViewMenu' => array(
-                array('name' => '更换图片', 'icon' => 'fa-circle-o', 'url' => "Picture/index", 'actionName' => "Picture/index",'auth' =>array(
+                array('name' => '列表', 'icon' => 'fa-circle-o', 'url' => "Picture/index", 'actionName' => "Picture/index",'auth' =>array(
 
                 ))
             )
         ),
 
-        'solve' => array(
-            'treeView' => array('name' => '解决方案', 'icon' => 'fa-pagelines', 'url' => '#', 'actionName' => 'Admin\Controller\SolveController'),
-            'treeViewMenu' => array(
-                array('name' => '列表', 'icon' => 'fa-circle-o', 'url' => "Solve/index", 'actionName' => "Solve/index",'auth' =>array(
-
-                )),
-//                array('name' => '新增', 'icon' => 'fa-circle-o', 'url' => "Solve/create", 'actionName' => 'Solve/create','auth' =>array(
-//                    ''
-//                ))
-            )
-        ),
         'case' => array(
             'treeView' => array('name' => '成功案例', 'icon' => 'fa-comments', 'url' => '#', 'actionName' => 'Admin\Controller\CaseController'),
             'treeViewMenu' => array(
@@ -104,17 +73,6 @@ return array(
                 array('name' => '新增', 'icon' => 'fa-circle-o', 'url' => "Case/create", 'actionName' => 'Case/create','auth' =>array(
                     ''
                 ))
-            )
-        ),
-
-
-
-        'link' => array(
-            'treeView' => array('name' => '友情链接', 'icon' => 'fa-pagelines', 'url' => '#', 'actionName' => 'Admin\Controller\LinkController'),
-            'treeViewMenu' => array(
-                array('name' => '列表', 'icon' => 'fa-circle-o', 'url' => "Link/index", 'actionName' => "Link/index",'auth' =>array(
-
-                )),
             )
         ),
 

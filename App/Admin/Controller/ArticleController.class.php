@@ -1,9 +1,6 @@
 <?php
 namespace Admin\Controller;
 use Think\Controller;
-use Home\Model\ArticleModel as Article;
-use Home\Model\CommentModel as Comment;
-use Common\Common\ArticleLib;
 class ArticleController extends BaseController {
 
     public function index()
@@ -44,7 +41,7 @@ class ArticleController extends BaseController {
         $this->assign('updated_at_start', $updated_at_start);
         $this->assign('updated_at_end', $updated_at_end);
 
-        $article = new \Home\Model\ArticleModel();
+        $article = M('Articles');
         $count      = $article->where($map)->order('updated_at desc')->count();// 查询满足要求的总记录数
         $Page       = new \Think\Page($count,10);// 实例化分页类 传入总记录数和每页显示的记录数(25)
         $Page->setConfig('header','页');
@@ -57,7 +54,7 @@ class ArticleController extends BaseController {
         $list = $article->where($map)->order('updated_at desc')->limit($Page->firstRow.','.$Page->listRows)->select();
         $this->assign('articles',$list);// 赋值数据集
         $this->assign('page',$show);// 赋值分页输出
-        $this->assign('article_types',ArticleLib::$ARTICLE_TYPE);
+        $this->assign('article_types',getArticleType());
         $this->display('index'); // 输出模板
     }
 
@@ -66,25 +63,10 @@ class ArticleController extends BaseController {
      **/
     public function create()
     {
-        $this->assign('article_types',ArticleLib::$ARTICLE_TYPE);
+        $this->assign('article_types',getArticleType());
         $this->display('create');
     }
-    public function upload($fileInfo)
-    {
 
-        $upload = new \Think\Upload();// 实例化上传类
-        $upload->maxSize   =     3145728 ;// 设置附件上传大小
-        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
-        $upload->rootPath  =     './uploads/'; // 设置附件上传根目录
-        $upload->savePath  =     ''; // 设置附件上传（子）目录
-        // 上传单个文件 
-        $info   =   $upload->uploadOne($fileInfo);
-        if(!$info) {// 上传错误提示错误信息
-            $this->error($upload->getError());
-        }else{// 上传成功 获取上传文件信息
-            return  $info['savepath'].$info['savename'];
-        }
-    }
     /**
      *动作： 新增文章
      **/
@@ -94,7 +76,7 @@ class ArticleController extends BaseController {
         {
             $res = $this->upload($_FILES['article_photo']);
         }
-        $article = new Article;
+        $article = M('Articles');
         $data = $_POST;
         $user = session('admin.admin');
         $data['author'] = $user['username'];
@@ -103,21 +85,18 @@ class ArticleController extends BaseController {
         $data['updated_at'] = date("Y-m-d H:i:s",time());
         if($article->add($data))
         {
-             session('admin.success_msg','添加成功');
-             $this->redirect('Article/index','', 0, '');
-            //$this->success('发表成功');
-           // $this->ajaxReturn(array('ret'=>0));
+            $this->responseSuccess('添加成功','Article/index');
         }
-        $this->ajaxReturn(array('ret'=>1));
+        $this->responseError('添加失败，请重试','Article/index');
     }
     /**
      *视图： 编辑文章
      **/
     public function edit($id)
     {
-        $mod = new Article;
+        $mod = M('Articles');
         $article = $mod->where('article_id='.$id)->find();
-        $this->assign('article_types',ArticleLib::$ARTICLE_TYPE);
+        $this->assign('article_types',getArticleType());
         $this->assign('article',$article);
         $this->display('edit');
     }
@@ -131,7 +110,7 @@ class ArticleController extends BaseController {
         {
             $res = $this->upload($_FILES['article_photo']);
         }
-        $article = new Article;
+        $article = M('Articles');
         if($res)$article->article_photo = __ROOT__.'/uploads/'.$res;
         $article->article_type = $_POST['article_type'];
         $article->title = $_POST['title'];
@@ -139,22 +118,17 @@ class ArticleController extends BaseController {
         $article->updated_at = date('Y-m-d H:i:s',time());
         if($article->where('article_id='.$id)->save())
         {
-             session('admin.success_msg','编辑成功');
-            // //$this->success('评论成功');
-             $this->redirect('Article/index','', 0, '');
-            //$this->success('编辑成功','/Index/index',1);
-            //$this->redirect('Article/index', array('id' => $id), 1, '编辑成功');
-            //$this->ajaxReturn(array('ret'=>0));
+            $this->responseSuccess('编辑成功','Article/index');
         }
-        $this->ajaxReturn(array('ret'=>1));
+        $this->responseError('编辑失败，请重试','Article/index');
     }
     /**
      *动作： 删除文章
      **/
     public function delete()
     {
-        $article = new Article;
-        $comments = new Comment;
+        $article = M('Articles');
+        $comments = M('Comments');
         $id = $_GET['id'];
         $comments->where('article_id='.$id)->delete();
         $article->where('article_id='.$id)->delete();
@@ -169,7 +143,7 @@ class ArticleController extends BaseController {
      **/
     public function show($id)
     {
-        $articles = new Article;
+        $articles = M('Articles');
         $article = $articles->where('id='.$id)->find();
         $comments = $articles->relation(true)->find($id);
 

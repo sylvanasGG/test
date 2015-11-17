@@ -31,4 +31,28 @@
 
     }
 
+    function getArticleType()
+    {
+        return array(
+            'advantage'     => '技术优势',
+            'about'         => '关于我们',
+            'solve'         => '解决方案',
+            'case'          => '成功案例',
+            'service'       => '服务项目',
+            'customer'      => '客户品牌',
+        );
+    }
+
+    function getCaseType()
+    {
+        return array(
+            'sql'       =>  '数据库数据恢复案例',
+            'raid'      =>  '磁盘阵列数据恢复案例',
+            'server'    =>  '服务器数据恢复案例',
+            'xxj'       =>  '小型机数据恢复案例',
+            'sandick'   =>  '硬盘闪存数据恢复案例',
+            'personal'  =>  '个人级数据恢复案例',
+        );
+    }
+
     

@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Controller;
 use Think\Controller;
-use Common\Common\ArticleLib;
+
 class CaseController extends BaseController {
 
     public function index()
@@ -42,7 +42,7 @@ class CaseController extends BaseController {
         $this->assign('updated_at_start', $updated_at_start);
         $this->assign('updated_at_end', $updated_at_end);
 
-        $case = M('Case');
+        $case = M('Cases');
         $count      = $case->where($map)->order('updated_at desc')->count();// 查询满足要求的总记录数
         $Page       = new \Think\Page($count,10);// 实例化分页类 传入总记录数和每页显示的记录数(25)
         $Page->setConfig('header','页');
@@ -55,7 +55,7 @@ class CaseController extends BaseController {
         $list = $case->where($map)->order('updated_at desc')->limit($Page->firstRow.','.$Page->listRows)->select();
         $this->assign('cases',$list);// 赋值数据集
         $this->assign('page',$show);// 赋值分页输出
-        $this->assign('case_types',ArticleLib::$CASE_TYPE);
+        $this->assign('case_types',getCaseType());
         $this->display('index'); // 输出模板
     }
 
@@ -64,38 +64,40 @@ class CaseController extends BaseController {
      **/
     public function create()
     {
-        $this->assign('case_types',ArticleLib::$CASE_TYPE);
+        $this->assign('case_types',getCaseType());
         $this->display('create');
     }
+
     /**
      *动作： 新增案例
      **/
     public function store()
     {
-
-        $case = M('Case');
+        if($_FILES['case_photo']['name'])
+        {
+            $res = $this->upload($_FILES['case_photo']);
+        }
+        $case = M('Cases');
         $data = $_POST;
         $user = session('admin.admin');
         $data['author'] = $user['username'];
+        $data['case_photo'] =$res? __ROOT__.'/uploads/'.$res:__ROOT__.'/Public/img/111.jpg';
         $data['created_at'] = date("Y-m-d H:i:s",time());
         $data['updated_at'] = date("Y-m-d H:i:s",time());
         if($case->add($data))
         {
-            session('admin.success_msg','添加成功');
-            $this->redirect('Case/index','', 0, '');
-            //$this->success('发表成功');
-            // $this->ajaxReturn(array('ret'=>0));
+            $this->responseSuccess('添加成功','Case/index');
         }
-        $this->ajaxReturn(array('ret'=>1));
+        $this->responseError('添加失败，请重试','Case/index');
     }
     /**
      *视图： 编辑案例
      **/
     public function edit($id)
     {
-        $case = M('Case');
-        $case = $case->where('id='.$id)->find();
-        $this->assign('case_types',ArticleLib::$CASE_TYPE);
+        $mod = M('Cases');
+        $case = $mod->where('case_id='.$id)->find();
+        $this->assign('case_types',getCaseType());
         $this->assign('case',$case);
         $this->display('edit');
     }
@@ -104,36 +106,52 @@ class CaseController extends BaseController {
      **/
     public function update($id)
     {
-        $case = M('Case');
+        //$id = $_POST['id'];
+        if($_FILES['case_photo']['name'])
+        {
+            $res = $this->upload($_FILES['case_photo']);
+        }
+        $case = M('Cases');
+        if($res)$case->case_photo = __ROOT__.'/uploads/'.$res;
         $case->case_type = $_POST['case_type'];
         $case->title = $_POST['title'];
-        $case->storage_info = $_POST['storage_info'];
-        $case->fault_desc = $_POST['fault_desc'];
-        $case->recovery_process = $_POST['recovery_process'];
-        $case->recovery_result = $_POST['recovery_result'];
-        $case->tips = $_POST['tips'];
-        $case->remark = $_POST['remark'];
+        $case->content = $_POST['content'];
         $case->updated_at = date('Y-m-d H:i:s',time());
-        if($case->where('id='.$id)->save())
+        if($case->where('case_id='.$id)->save())
         {
-            session('admin.success_msg','编辑成功');
-            $this->redirect('Case/index','', 0, '');
+            $this->responseSuccess('编辑成功','Case/index');
         }
-        $this->ajaxReturn(array('ret'=>1));
+        $this->responseError('添加失败，请重试','Case/index');
     }
     /**
      *动作： 删除案例
      **/
     public function delete()
     {
-        $case = M('Case');
+        $case = M('Cases');
+        $comments = M('Comments');
         $id = $_GET['id'];
-        $case->where('id='.$id)->delete();
+        $comments->where('case_id='.$id)->delete();
+        $case->where('case_id='.$id)->delete();
         $data = array(
             'ret'=>0,
             'msg'=>'删除成功',
         );
         $this->ajaxReturn($data);
     }
+    /**
+     *动作： 后台展示一篇案例
+     **/
+    public function show($id)
+    {
+        $cases = M('Cases');
+        $case = $cases->where('id='.$id)->find();
+        $comments = $cases->relation(true)->find($id);
+
+        $this->assign('case',$case);
+        $this->assign('comments',$comments['comment']);
+        $this->display('show');
+    }
+
 
 }

@@ -10,13 +10,14 @@ class BaseController extends Controller {
     public function __construct()
     {
         parent::__construct();
-        //获取配置文件中的menu目录
+
         //验证是否admin登录
         if(!session('admin.admin'))
         {
             $this->redirect('Auth/login','', 0, '');
             //$this->error('请先登录...','Auth/login',2);
         }
+        //获取配置文件中的menu目录
         $this->_menus = C("LAYOUT_MENU");
         if(!$this->allowList()){
             echo '您无此权限，请联系管理员';exit;
@@ -102,16 +103,8 @@ class BaseController extends Controller {
             //var_dump($this->_allowAccess);exit;
             if(!array_key_exists($actionName, $this->_allowAccess))
             {
-                //echo 123;exit;
-                return false;
+               return false;
             }
-
-
-
-//            if (isset($this->_allowAccess[$actionName]))
-//            {
-//                return $this->_allowAccess[$actionName];
-//            }
             return true;
         }
 
@@ -123,40 +116,38 @@ class BaseController extends Controller {
         return CONTROLLER_NAME.'/'.ACTION_NAME;
     }
 
-    protected function upload($filename)
+    protected function responseSuccess($msg='',$route='')
     {
-        //上传图片的最大尺寸，单位kb
-        $fileMaxSize = 10000;
-
-        $base = C('UPLOAD_PATH');
-
-        try {
-
-            $uploader = new Upload($filename);
-
-            //检测是不是图片格式文件
-            if (!$uploader->isImage()) {
-                $result = array('result' => 0, 'message' => "请选择图片格式");
-
-            } elseif (!($uploader->getSize() < $fileMaxSize)) {
-                $result = array('result' => 0, 'message' => "请选择文件大小{$fileMaxSize}k以内的图片");
-
-            } else {
-                $savepath = $uploader->setBasePath($base)->save();
-                $result = array('result' => 1, 'message' => '上传成功' , 'destFile'=>'/Public/uploads/img/' . $savepath);
-            }
-
-        } catch (\Exception $e) {
-            if ($e->getMessage() == 'not file selected') {
-                $result = array('result' => 0, 'message' => "请选择图片上传");
-            }
-            if ($e->getMessage() == 'file size too large') {
-                $result = array('result' => 0, 'message' => "上传文件太大了,请重新选择!");
-            }
-        }
-        return $result;
-
+        $route = $route?$route:$_SERVER['HTTP_REFERER'];
+        session('admin.success_msg',$msg);
+        $this->redirect($route,'', 0, '');
     }
+
+    protected function responseError($msg='',$route='')
+    {
+        $route = $route?$route:$_SERVER['HTTP_REFERER'];
+        session('admin.error_msg',$msg);
+        $this->redirect($route,'', 0, '');
+    }
+
+    public function upload($fileInfo)
+    {
+
+        $upload = new \Think\Upload();// 实例化上传类
+        $upload->maxSize   =     10485760 ;// 设置附件上传大小
+        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+        $upload->rootPath  =     './uploads/'; // 设置附件上传根目录
+        $upload->savePath  =     ''; // 设置附件上传（子）目录
+        // 上传单个文件
+        $info   =   $upload->uploadOne($fileInfo);
+        if(!$info) {// 上传错误提示错误信息
+            $this->error($upload->getError());
+        }else{// 上传成功 获取上传文件信息
+            return  $info['savepath'].$info['savename'];
+        }
+    }
+
+
 
 
 }

@@ -12,30 +12,15 @@ class PortraitController extends BaseController {
     }
 
     /**
-     *��ͼ�� ��������
+     *试图：新增
      **/
     public function create()
     {
         $this->display('create');
     }
-    public function upload($fileInfo)
-    {
 
-        $upload = new \Think\Upload();// ʵ�����ϴ���
-        $upload->maxSize   =     3145728 ;// ���ø����ϴ���С
-        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// ���ø����ϴ�����
-        $upload->rootPath  =     './uploads/'; // ���ø����ϴ���Ŀ¼
-        $upload->savePath  =     ''; // ���ø����ϴ����ӣ�Ŀ¼
-        // �ϴ������ļ� 
-        $info   =   $upload->uploadOne($fileInfo);
-        if(!$info) {// �ϴ�������ʾ������Ϣ
-            $this->error($upload->getError());
-        }else{// �ϴ��ɹ� ��ȡ�ϴ��ļ���Ϣ
-            return  $info['savepath'].$info['savename'];
-        }
-    }
     /**
-     *������ ��������
+     *动作：新增
      **/
     public function store()
     {
@@ -44,7 +29,7 @@ class PortraitController extends BaseController {
         $map['title'] = $_POST['title'];
         if ($portrait->where($map)->find()) {
 
-            $this->error('标题重复');
+            $this->responseError('标题重复','Portrait/create');
         }
         if($_FILES['portrait_photo']['name'])
         {
@@ -59,15 +44,12 @@ class PortraitController extends BaseController {
         $data['updated_at'] = date("Y-m-d H:i:s",time());
         if($portrait->add($data))
         {
-            session('admin.success_msg','创建成功');
-            $this->redirect('Portrait/index','', 0, '');
-            //$this->success('����ɹ�');
-            // $this->ajaxReturn(array('ret'=>0));
+            $this->responseSuccess('创建成功','Portrait/index');
         }
-        //$this->ajaxReturn(array('ret'=>1));
+        $this->responseError('创建失败','Portrait/index');
     }
     /**
-     *��ͼ�� �༭����
+     *试图：编辑
      **/
     public function edit($id)
     {
@@ -77,7 +59,7 @@ class PortraitController extends BaseController {
         $this->display();
     }
     /**
-     *������ �༭����
+     *动作：编辑
      **/
     public function update($id)
     {
@@ -92,13 +74,12 @@ class PortraitController extends BaseController {
         $portrait->updated_at = date('Y-m-d H:i:s',time());
         if($portrait->where('id='.$id)->save())
         {
-            session('admin.success_msg','编辑成功');
-            $this->redirect('Portrait/index','', 0, '');
+            $this->responseSuccess('编辑成功','Portrait/index');
         }
-        $this->ajaxReturn(array('ret'=>1));
+        $this->responseError('编辑失败','Portrait/index');
     }
     /**
-     *������ ɾ������
+     *动作：编辑
      **/
     public function delete()
     {

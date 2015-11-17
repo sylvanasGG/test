@@ -18,22 +18,7 @@ class TransverseController extends BaseController {
     {
         $this->display('create');
     }
-    public function upload($fileInfo)
-    {
 
-        $upload = new \Think\Upload();
-        $upload->maxSize   =     3145728 ;
-        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');
-        $upload->rootPath  =     './uploads/';
-        $upload->savePath  =     '';
-        //
-        $info   =   $upload->uploadOne($fileInfo);
-        if(!$info) {
-            $this->error($upload->getError());
-        }else{//
-            return  $info['savepath'].$info['savename'];
-        }
-    }
     /**
      *动作：创建
      **/
@@ -44,7 +29,7 @@ class TransverseController extends BaseController {
         $map['title'] = $_POST['title'];
         if ($transverse->where($map)->find()) {
 
-            $this->error('标题重复');
+            $this->responseError('标题重复','Transverse/Create');
         }
         if($_FILES['transverse_photo']['name'])
         {
@@ -59,10 +44,9 @@ class TransverseController extends BaseController {
         $data['updated_at'] = date("Y-m-d H:i:s",time());
         if($transverse->add($data))
         {
-            session('admin.success_msg','创建成功');
-            $this->redirect('Transverse/index','', 0, '');
+            $this->responseSuccess('创建成功','Transverse/index');
         }
-        //$this->ajaxReturn(array('ret'=>1));
+        $this->responseError('创建失败','Transverse/create');
     }
     /**
      *视图：编辑
@@ -90,10 +74,9 @@ class TransverseController extends BaseController {
         $transverse->updated_at = date('Y-m-d H:i:s',time());
         if($transverse->where('id='.$id)->save())
         {
-            session('admin.success_msg','更新成功');
-            $this->redirect('Transverse/index','', 0, '');
+            $this->responseSuccess('更新成功','Transverse/index');
         }
-        $this->ajaxReturn(array('ret'=>1));
+        $this->responseError('更新失败','Transverse/index');
     }
     /**
      *删除

@@ -24,7 +24,6 @@ class SlideController extends BaseController {
             'ret'=>0,
             'id'=>$res
         );
-        //exit(json_encode($data));
         $this->ajaxReturn($data);
     }
 
