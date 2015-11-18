@@ -19,39 +19,32 @@
 <section class="content">
 
     <div class="box">
-        <div class="box-header">
-        </div>
+        <div class="box-header"></div>
 
         <div class="box-body">
             <div class="container">
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1">
                         <div class="panel panel-default">
-
-
                             <div class="panel-body">
-                                <form action="{:U('Portrait/update',array('id'=>$portrait['id']))}" method="POST" id="editPortraitForm" enctype="multipart/form-data">
+                                <form action="{:U('Portrait/update',array('id'=>$portrait['id']))}" method="POST" id="editPortraitForm" enctype="multipart/form-data" class="cmxform">
                                     <!--<input type="hidden" name="id" value="{$portrait['portrait_id']}" />-->
                                     <div class="form-group">
                                         <label>标题</label>
-                                        <input type="text" name="title" class="form-control" required="required" id="title" value="{$portrait['title']}">
+                                        <input type="text" name="title" class="form-control" required id="title" value="{$portrait['title']}" title="请输入标题">
 
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" style="margin-top: 20px;">
                                         <label>开头图片</label>
                                         <a href="{$portrait['portrait_photo']}" target="__blank">当前图片</a>
                                         <input type="file" name="portrait_photo"  />
                                     </div>
-                                    <!--<div class="form-group">-->
-                                    <!--<label>板块标题</label>-->
-                                    <!--<input type="text" name="title" class="form-control" required="required" value="{$portrait['title']}">-->
-                                    <!--</div>-->
-                                    <div class="form-group" style="min-height: 300px;overflow-y: auto">
+                                    <div class="form-group" style="min-height: 300px;overflow-y: auto;margin-top: 20px;">
                                         <label>内容</label>
                                         <script id="editor" name="content" type="text/plain"></script>
                                     </div>
                                     <textarea hidden="hidden" id="contID" >{$portrait['content']}</textarea>
-                                    <button class="btn btn-lg btn-info" type="button" id="editPortraitBtn">提交</button>
+                                    <button class="btn btn-lg btn-info" type="submit" >提交</button>
                                 </form>
                             </div>
                         </div>
@@ -62,22 +55,7 @@
     </div>
 </section>
 <script>
-    $("#editPortraitBtn").click(function(e)
-    {
-        e.preventDefault();
-        var go = true;
-        var val = $("#title").val();
-        if(val == '')
-        {
-            alert('请输入标题');
-            $("#title").focus();
-            go = false;
-            return false;
-        }
-        if(go == false)
-        {
-            return false;
-        }
-        $("#editPortraitForm").submit();
+    $(function(){
+        $("#editPortraitForm").validate();
     })
 </script>
