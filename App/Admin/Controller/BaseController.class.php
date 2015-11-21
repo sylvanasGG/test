@@ -111,11 +111,22 @@ class BaseController extends Controller {
         return true;
     }
 
+    /**
+     * 获取控制器/方法名称
+     *
+     * @return string
+     */
     protected function getControllerFun()
     {
         return CONTROLLER_NAME.'/'.ACTION_NAME;
     }
 
+    /**
+     * 返回成功信息
+     *
+     * @param string $msg
+     * @param string $route
+     */
     protected function responseSuccess($msg='',$route='')
     {
         $route = $route?$route:$_SERVER['HTTP_REFERER'];
@@ -123,6 +134,12 @@ class BaseController extends Controller {
         $this->redirect($route,'', 0, '');
     }
 
+    /**
+     * 返回错误信息
+     *
+     * @param string $msg
+     * @param string $route
+     */
     protected function responseError($msg='',$route='')
     {
         $route = $route?$route:$_SERVER['HTTP_REFERER'];
@@ -130,6 +147,12 @@ class BaseController extends Controller {
         $this->redirect($route,'', 0, '');
     }
 
+    /**
+     * 文件上传
+     *
+     * @param $fileInfo
+     * @return string
+     */
     public function upload($fileInfo)
     {
 
